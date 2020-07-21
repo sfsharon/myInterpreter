@@ -19,16 +19,21 @@ token_exprs = [
     (r'[ \n\t]+',                   None),          # Blanks - Have no token
     (r'#[^\n]*',                    None),          # Remarks (python style) - Have no token
     (r'\:=',                        RESERVED),      # Assignment operator 
-    (r'LET',                        RESERVED),      # Command reserved word
-    (r'IF',                         RESERVED),      # Command reserved word
-    (r'JUMP',                       RESERVED),      # Command reserved word
-    (r'CALL',                       RESERVED),      # Command reserved word
-    (r'RETURN',                     RESERVED),      # Command reserved word
-    (r'PRINT',                      RESERVED),      # Command reserved word
-    (r'[A-Za-z][A-Za-z0-9_]*\:',    LABEL),         # Label is an alphanumeric string, followed by a colon
-    (r'[0-9]+',                     INT),           # Integer token - 
+    (r'\+',                         RESERVED),      # Plus operator 
+    (r'\*',                         RESERVED),      # Multiplication operator 
+    (r'>',                          RESERVED),      # Greater then Boolean operator
+    (r'<',                          RESERVED),      # Less then Boolean operator
+    (r'=',                          RESERVED),      # Equal Boolean operator
+    (r'LET[\W]+',                        RESERVED),      # Command reserved word, with at least one non-word character following it
+    (r'IF[\W]+',                         RESERVED),      # Command reserved word, with at least one non-word character following it
+    (r'JUMP[\W]+',                       RESERVED),      # Command reserved word, with at least one non-word character following it
+    (r'CALL[\W]+',                       RESERVED),      # Command reserved word, with at least one non-word character following it
+    (r'RETURN[\W]+',                     RESERVED),      # Command reserved word, with at least one non-word character following it
+    (r'PRINT[\W]+',                      RESERVED),      # Command reserved word, with at least one non-word character following it
+    (r'[0-9]+',                     INT),           # Integer token 
                                                     # TODO - Deal with negative integer
-    (r'R[0-9]+',                    REG)            # Register token : R0 - R9
+    (r'R[0-9]+',                    REG),           # Register token : R0 - R9
+    (r'[A-Za-z][A-Za-z0-9_]*[\:]?', LABEL)          # Label is an alphanumeric string, possibly followed by one colon
     ]
 
     
@@ -59,7 +64,7 @@ if __name__ == "__main__" :
     exampleFile_1 = r"./examples/countTo10.alpl"
     exampleFile_2 = r"./examples/print2020.alpl"
     
-    file = open(exampleFile_1)
+    file = open(exampleFile_2)
     characters = file.read()
     file.close()
     tokens = lex(characters)
