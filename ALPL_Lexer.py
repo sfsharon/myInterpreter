@@ -24,12 +24,12 @@ token_exprs = [
     (r'>',                          RESERVED),      # Greater then Boolean operator
     (r'<',                          RESERVED),      # Less then Boolean operator
     (r'=',                          RESERVED),      # Equal Boolean operator
-    (r'LET[\W]+',                        RESERVED),      # Command reserved word, with at least one non-word character following it
-    (r'IF[\W]+',                         RESERVED),      # Command reserved word, with at least one non-word character following it
-    (r'JUMP[\W]+',                       RESERVED),      # Command reserved word, with at least one non-word character following it
-    (r'CALL[\W]+',                       RESERVED),      # Command reserved word, with at least one non-word character following it
-    (r'RETURN[\W]+',                     RESERVED),      # Command reserved word, with at least one non-word character following it
-    (r'PRINT[\W]+',                      RESERVED),      # Command reserved word, with at least one non-word character following it
+    (r'\bLET\b',                        RESERVED),      # Command reserved word, match only exact word
+    (r'\bIF\b',                         RESERVED),      # Command reserved word, match only exact word
+    (r'\bJUMP\b',                       RESERVED),      # Command reserved word, match only exact word
+    (r'\bCALL\b',                       RESERVED),      # Command reserved word, match only exact word
+    (r'\bRETURN\b',                     RESERVED),      # Command reserved word, match only exact word
+    (r'\bPRINT\b',                      RESERVED),      # Command reserved word, match only exact word
     (r'[0-9]+',                     INT),           # Integer token 
                                                     # TODO - Deal with negative integer
     (r'R[0-9]+',                    REG),           # Register token : R0 - R9
