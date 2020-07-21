@@ -13,23 +13,25 @@ RESERVED = 'RESERVED'   # Reserved word
 INT      = 'INT'        # Integer
 LABEL    = 'LABEL'      # Label string used for jumping
 REG      = 'REG'        # Register string (R0 - R9)
+OP_ADD   = 'OP_ADD'
+OP_MULT  = 'OP_MULT'
 
 # Token expressions
 token_exprs = [
     (r'[ \n\t]+',                   None),          # Blanks - Have no token
     (r'#[^\n]*',                    None),          # Remarks (python style) - Have no token
     (r'\:=',                        RESERVED),      # Assignment operator 
-    (r'\+',                         RESERVED),      # Plus operator 
-    (r'\*',                         RESERVED),      # Multiplication operator 
+    (r'\+',                         OP_ADD),      # Plus operator 
+    (r'\*',                         OP_MULT),      # Multiplication operator 
     (r'>',                          RESERVED),      # Greater then Boolean operator
     (r'<',                          RESERVED),      # Less then Boolean operator
     (r'=',                          RESERVED),      # Equal Boolean operator
-    (r'\bLET\b',                        RESERVED),      # Command reserved word, match only exact word
-    (r'\bIF\b',                         RESERVED),      # Command reserved word, match only exact word
-    (r'\bJUMP\b',                       RESERVED),      # Command reserved word, match only exact word
-    (r'\bCALL\b',                       RESERVED),      # Command reserved word, match only exact word
-    (r'\bRETURN\b',                     RESERVED),      # Command reserved word, match only exact word
-    (r'\bPRINT\b',                      RESERVED),      # Command reserved word, match only exact word
+    (r'\bLET\b',                    RESERVED),      # Command reserved word, match only exact word
+    (r'\bIF\b',                     RESERVED),      # Command reserved word, match only exact word
+    (r'\bJUMP\b',                   RESERVED),      # Command reserved word, match only exact word
+    (r'\bCALL\b',                   RESERVED),      # Command reserved word, match only exact word
+    (r'\bRETURN\b',                 RESERVED),      # Command reserved word, match only exact word
+    (r'\bPRINT\b',                  RESERVED),      # Command reserved word, match only exact word
     (r'[0-9]+',                     INT),           # Integer token 
                                                     # TODO - Deal with negative integer
     (r'R[0-9]+',                    REG),           # Register token : R0 - R9
