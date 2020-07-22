@@ -110,13 +110,13 @@ class Interpreter:
 
 
 if __name__ == "__main__" :
-    #if len(sys.argv) != 2 :
-    #    print ("ALPL_Interpreter syntax:\n.\\ALPL_Interpreter ALPL_file")
-    #    sys.exit(1)
-    #alpl_file = sys.argv[1]
+    if len(sys.argv) != 2 :
+        print ("ALPL_Interpreter syntax:\n.\\ALPL_Interpreter ALPL_file")
+        sys.exit(1)
+    alpl_file = sys.argv[1]
     
-    # Debug
-    alpl_file = r"./examples/simpleExpr.alpl"
+    ## Debug
+    #alpl_file = r"./examples/simpleExpr.alpl"
     
     # Create Interpreter object
     interObj = Interpreter(alpl_file)
