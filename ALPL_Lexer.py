@@ -11,11 +11,12 @@ import re
 # Tags for the ALPL language
 RESERVED   = 'RESERVED'   # Reserved word
 INT        = 'INT'        # Integer
-LABEL      = 'LABEL'      # Label string used for jumping
 REG        = 'REG'        # Register string (R0 - R9)
 OP_ADD     = 'OP_ADD'
 OP_MULT    = 'OP_MULT'
-LABEL_ADDR = 'LABEL_ADDR'
+LABEL_ADDR = 'LABEL_ADDR' # Actual address to jump to 
+LABEL      = 'LABEL'      # Label string used for jumping. Will be replaced by line number and label 'LINE_NUM'
+LINE_NUM   = 'LINE_NUM'
 
 # Token expressions
 token_exprs = [
@@ -70,6 +71,7 @@ def secondPass(instructions) :
     # Mapping label to line number
     labelToLine = {}
 
+    # Create the label to line mapping
     for lineNum in instructions :
         # If this is a LABEL_ADDR, it should be the first token
         first_token = instructions[lineNum][0]
@@ -79,7 +81,15 @@ def secondPass(instructions) :
             # Remove the last character from label address, which is ":"
             labelName = token_name[:-1]
             labelToLine[labelName] = lineNum
-        
+
+     # Replace labels with line addresses in the instructions 
+    for lineNum in instructions :
+        token_list = instructions[lineNum]
+        for idx, token in enumerate(token_list) :
+            token_name = token[0]
+            token_type = token[1]
+            if token_type == LABEL :
+                instructions[lineNum][idx] = (labelToLine[token_name], LINE_NUM)
 
 if __name__ == "__main__" :
     exampleFile_1 = r"./examples/countTo10.alpl"
@@ -102,7 +112,8 @@ if __name__ == "__main__" :
     # Second pass - Replace label with line numbers
     secondPass(instructions)
 
-    #tokens = lex(characters)
-    #for token in tokens:
-    #    print (token)
-    print (instructions)
+    # Pretty print the instructions
+    import pprint 
+    pp = pprint.PrettyPrinter(indent=4)
+    pp.pprint(instructions)
+    #print (instructions)
