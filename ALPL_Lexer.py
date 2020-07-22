@@ -91,19 +91,15 @@ def secondPass(instructions) :
             if token_type == LABEL :
                 instructions[lineNum][idx] = (labelToLine[token_name], LINE_NUM)
 
-if __name__ == "__main__" :
-    exampleFile_1 = r"./examples/countTo10.alpl"
-    exampleFile_2 = r"./examples/print2020.alpl"
-    
-    # Instruction dictionary
-    # Key   : Line number
-    # value : List of tokens
+def createInstructions (lines) :
+    """
+    Input : Line list from an ALPL file
+    Output : Instruction Dictionary :
+         Instruction dictionary
+            Key   : Line number
+            value : List of tuples that represent tokens : (VAL, TAG)
+    """
     instructions = {}
-
-    file = open(exampleFile_2)
-    #characters = file.read()
-    lines = file.readlines()
-    file.close()
 
     # Create instruction dictionary
     for idx, val in enumerate(lines) :
@@ -111,6 +107,18 @@ if __name__ == "__main__" :
 
     # Second pass - Replace label with line numbers
     secondPass(instructions)
+
+    return instructions
+
+if __name__ == "__main__" :
+    exampleFile_1 = r"./examples/countTo10.alpl"
+    exampleFile_2 = r"./examples/print2020.alpl"
+    
+    file = open(exampleFile_2)
+    lines = file.readlines()
+    file.close()
+
+    instructions = createInstructions(lines)
 
     # Pretty print the instructions
     import pprint 

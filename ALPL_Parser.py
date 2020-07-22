@@ -70,15 +70,17 @@ class parser(object) :
         return result
 
 if __name__ == "__main__" :
-    exampleFile_1 = r"./examples/simpleExpr.alpl"
+    exampleFile_1 = r"./examples/countTo10.alpl"
+    exampleFile_2 = r"./examples/print2020.alpl"
     
-    # Read input file
-    file = open(exampleFile_1)
-    characters = file.read()
+    file = open(exampleFile_2)
+    lines = file.readlines()
     file.close()
 
     # Lexer
-    tokens = ALPL_Lexer.lex(characters)
+    instructions = ALPL_Lexer.createInstructions(lines)
+
+    # Interpreter
 
     # Parser
     myParser = parser(tokens)
