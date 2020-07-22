@@ -9,12 +9,13 @@ import sys
 import re
 
 # Tags for the ALPL language
-RESERVED = 'RESERVED'   # Reserved word
-INT      = 'INT'        # Integer
-LABEL    = 'LABEL'      # Label string used for jumping
-REG      = 'REG'        # Register string (R0 - R9)
-OP_ADD   = 'OP_ADD'
-OP_MULT  = 'OP_MULT'
+RESERVED   = 'RESERVED'   # Reserved word
+INT        = 'INT'        # Integer
+LABEL      = 'LABEL'      # Label string used for jumping
+REG        = 'REG'        # Register string (R0 - R9)
+OP_ADD     = 'OP_ADD'
+OP_MULT    = 'OP_MULT'
+LABEL_ADDR = 'LABEL_ADDR'
 
 # Token expressions
 token_exprs = [
@@ -35,7 +36,8 @@ token_exprs = [
     (r'[0-9]+',                     INT),           # Integer token 
                                                     # TODO - Deal with negative integer
     (r'R[0-9]+',                    REG),           # Register token : R0 - R9
-    (r'[A-Za-z][A-Za-z0-9_]*[\:]?', LABEL)          # Label is an alphanumeric string, possibly followed by one colon
+    (r'[A-Za-z][A-Za-z0-9_]*\:',    LABEL_ADDR),    # Label address is an alphanumeric string followed by one colon
+    (r'[A-Za-z][A-Za-z0-9_]*',      LABEL)          # Label is an alphanumeric string, not followed by one colon
     ]
 
     
@@ -61,14 +63,46 @@ def lex(characters):
             pos = match.end(0)
     return tokens
 
+def secondPass(instructions) :
+    """
+    Traversing the instruction dictionary, and replaceing the label with line numbers
+    """
+    # Mapping label to line number
+    labelToLine = {}
+
+    for lineNum in instructions :
+        # If this is a LABEL_ADDR, it should be the first token
+        first_token = instructions[lineNum][0]
+        token_name = first_token[0]
+        token_type = first_token[1]
+        if token_type == LABEL_ADDR :
+            # Remove the last character from label address, which is ":"
+            labelName = token_name[:-1]
+            labelToLine[labelName] = lineNum
+        
 
 if __name__ == "__main__" :
     exampleFile_1 = r"./examples/countTo10.alpl"
     exampleFile_2 = r"./examples/print2020.alpl"
     
+    # Instruction dictionary
+    # Key   : Line number
+    # value : List of tokens
+    instructions = {}
+
     file = open(exampleFile_2)
-    characters = file.read()
+    #characters = file.read()
+    lines = file.readlines()
     file.close()
-    tokens = lex(characters)
-    for token in tokens:
-        print (token)
+
+    # Create instruction dictionary
+    for idx, val in enumerate(lines) :
+        instructions[idx] = lex(val)
+
+    # Second pass - Replace label with line numbers
+    secondPass(instructions)
+
+    #tokens = lex(characters)
+    #for token in tokens:
+    #    print (token)
+    print (instructions)

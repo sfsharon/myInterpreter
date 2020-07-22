@@ -2,7 +2,7 @@
 
 """
 ALPL_Parser - Parse the token list from the lexer
-
+Based on : https://ruslanspivak.com/lsbasi-part4/
 """
 import re
 
@@ -12,21 +12,22 @@ from ALPL_Lexer import RESERVED, INT , LABEL, REG, OP_ADD, OP_MULT
 class parser(object) :
     # Class constans
     # Register file size
-    REG_SIZE = 10
+    REG_FILE_SIZE = 10
 
     def __init__ (self, tokens) :
         self.tokens = tokens
         self.tokenPos = 0
         
-        self.regs = [0 for i in range(self.REG_SIZE)]
+        self.regs = [0 for i in range(self.REG_FILE_SIZE)]
 
-    #def consumeToken(self, token_type) :
-    #    if self.tokens[self.tokenPos][1] == token_type : # Compare token type
-    #        self.tokenPos += 1
-    #    else :
-    #        raise Exception('Invalid Syntax')
             
     def factor(self) :
+        """
+        Grammar rule 
+        ===================
+        factor : INT | REG
+        Explanation : factor is either an integer of a register
+        """
         token = self.tokens[self.tokenPos]
         rVal = 0
 
@@ -46,6 +47,14 @@ class parser(object) :
         return rVal
 
     def expr(self) :
+        """
+        Grammar rule 
+        =================== 
+        expr : factor ((OP_MULT | OP_ADD) factor)?
+
+        Explanation : expr is build from one factor, and none or one 
+                      of (OP_MULT | OP_ADD) factor
+        """
         result = self.factor()
         
         if self.tokens[self.tokenPos][1] in (OP_ADD, OP_MULT) :
